@@ -1,0 +1,19 @@
+.dice {
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+    display: inline-block;
+    background-color: #ccc;
+    text-align: center;
+    line-height: 50px;
+}
+
+#scoreboard {
+    margin-top: 20px;
+}
+
+#scoreboard th, #scoreboard td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}

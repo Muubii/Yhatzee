@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <title>Yahtzee</title>
+    <body>
+
+        <h1>Yahtzee Game</h1>
+        <div id="dice-container"></div>
+        <a id="teler">3</a>
+        <button onclick="rollDice()">Roll Dice</button>
+
+    
+        <div id="scoreboard">
+            <h2>Score Board</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Categorie</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Ones</td>
+                        <td id="score-ones">0</td>
+                    </tr>
+                    <tr>
+                        <td>Twos</td>
+                        <td id="score-twos">0</td>
+                    </tr>
+                    <tr>
+                        <td>Threes</td>
+                        <td id="score-threes">0</td>
+                    </tr>
+                    <tr>
+                        <td>Fours</td>
+                        <td id="score-fours">0</td>
+                    </tr>
+                    <tr>
+                        <td>Fives</td>
+                        <td id="score-fives">0</td>
+                    </tr>
+                    <tr>
+                        <td>Sixes</td>
+                        <td id="score-sixes">0</td>
+                    </tr>
+                    <tr>
+                        <td>Total Score</td>
+                        <td id="total-score">0</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    <script src="Index.js"></script>
+</body>
+</html>
