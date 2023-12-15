@@ -17,3 +17,7 @@
     padding: 8px;
     text-align: center;
 }
+
+.dice.selected {
+    background-color: lightblue;
+  }

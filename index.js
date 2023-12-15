@@ -56,6 +56,8 @@ function toggleHold(event) {
     } else {
         diceElement.classList.add('held');
     }
+
+    toggleSelect(diceElement);
 }
 
 function calculateScore() {
@@ -89,4 +91,9 @@ function calculateScore() {
     document.getElementById('total-score').textContent = totalScore;
 }
 
-//onclick en een funcie om de score te blijiven houden dus break.
+
+function toggleSelect(diceElement) {
+    diceElement.classList.toggle('selected');
+}
+
+
