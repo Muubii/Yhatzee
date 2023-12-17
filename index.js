@@ -8,31 +8,45 @@ let scores = {
     fives: 0,
     sixes: 0
 };
+let selectedDice = [];
+
 
 //hoeveel rollen je krijgt
 function rollDice() {
     if (rollsLeft > 0) {
-        diceValues = [];
         let diceContainer = document.getElementById('dice-container');
         diceContainer.innerHTML = '';
 
         for (let i = 0; i < 5; i++) {
-            let diceValue = Math.floor(Math.random() * 6) + 1;
-            diceValues.push(diceValue);
+            let diceValue;
+            
+            // Controleer of de dobbelsteen geselecteerd is
+            if (selectedDice.includes(i)) {
+                diceValue = diceValues[i];
+            } else {
+                diceValue = Math.floor(Math.random() * 6) + 1;
+            }
+
+            diceValues[i] = diceValue;
 
             let diceElement = document.createElement('div');
             diceElement.className = 'dice';
             diceElement.textContent = diceValue;
             diceElement.setAttribute('data-index', i);
             diceElement.onclick = toggleHold;
+            
+            // Voeg de 'selected'-klasse toe als de dobbelsteen geselecteerd is
+            if (selectedDice.includes(i)) {
+                diceElement.classList.add('selected');
+            }
+
             diceContainer.appendChild(diceElement);
         }
 
-
+        // Reset de geselecteerde dobbelstenen
+        selectedDice = [];
 
         rollsLeft--;
-
-        // Update de teller 
         updateRollsLeft();
         calculateScore();
 
@@ -42,6 +56,7 @@ function rollDice() {
     }
 }
 
+
 function updateRollsLeft() {
     // Update de teller 
     document.getElementById('rolls-left').textContent = rollsLeft;
@@ -50,14 +65,21 @@ function updateRollsLeft() {
 function toggleHold(event) {
     let index = event.target.getAttribute('data-index');
     let diceElement = document.querySelector('[data-index="' + index + '"]');
-
-    if (diceElement.classList.contains('held')) {
-        diceElement.classList.remove('held');
-    } else {
-        diceElement.classList.add('held');
-    }
+    
 
     toggleSelect(diceElement);
+}
+
+function toggleSelect(diceElement) {
+    diceElement.classList.toggle('selected');
+    let index = parseInt(diceElement.getAttribute('data-index'));
+
+    // Voeg of verwijder de dobbelsteen uit de geselecteerde lijst
+    if (selectedDice.includes(index)) {
+        selectedDice = selectedDice.filter(item => item !== index);
+    } else {
+        selectedDice.push(index);
+    }
 }
 
 function calculateScore() {
@@ -92,8 +114,5 @@ function calculateScore() {
 }
 
 
-function toggleSelect(diceElement) {
-    diceElement.classList.toggle('selected');
-}
 
 

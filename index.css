@@ -6,7 +6,14 @@
     background-color: #ccc;
     text-align: center;
     line-height: 50px;
+    transition: 1s;
 }
+
+.dice:hover {
+    background-color: lightblue;
+}
+
+
 
 #scoreboard {
     margin-top: 20px;
@@ -18,6 +25,6 @@
     text-align: center;
 }
 
-.dice.selected {
-    background-color: lightblue;
+.selected {
+    background-color:paleturquoise;
   }
