@@ -7,14 +7,15 @@
     <title>Yahtzee</title>
     <body>
 
-        <h1>Yahtzee Game</h1>
+        <h1 id="head">Yahtzee Game</h1>
         <div id="dice-container"></div>
         <p>Restende worpen: <span id="rolls-left">3</span></p>
-        <button onclick="rollDice()">Roll Dice</button>
+        <button id="button" onclick="rollDice()">Roll Dice</button>
+        </div>
     
         <div id="scoreboard">
             <h2>Score Board</h2>
-            <table>
+            <table id="Board">
                 <thead>
                     <tr>
                         <th>Categorie</th>
@@ -45,6 +46,34 @@
                     <tr>
                         <td>Sixes</td>
                         <td id="score-sixes">0</td>
+                    </tr>
+                    <tr>
+                        <td>Bonus</td>
+                        <td id="score-bonus">0</td>
+                    </tr>
+                    <tr>
+                        <td>Three of a kind</td>
+                        <td id="score-threeOfaKind">0</td>
+                    </tr>
+                    <tr>
+                        <td>Full house</td>
+                        <td id="score-fullHouse">0</td>
+                    </tr>
+                    <tr>
+                        <td>Small straight</td>
+                        <td id="score-smallStraight">0</td>
+                    </tr>
+                    <tr>
+                        <td>Large straight</td>
+                        <td id="score-largeStraight">0</td>
+                    </tr>
+                    <tr>
+                        <td>Yahtzee</td>
+                        <td id="score-yahtzee">0</td>
+                    </tr>
+                    <tr>
+                        <td>Chance bonus</td>
+                        <td id="score-chanceBonus">0</td>
                     </tr>
                     <tr>
                         <td>Total Score</td>

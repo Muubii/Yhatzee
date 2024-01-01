@@ -111,8 +111,94 @@ function calculateScore() {
         totalScore += scores[category];
     }
     document.getElementById('total-score').textContent = totalScore;
+
+    calculateBonusScore();
+    calculateThreeOfAKind();
+    calculateFullHouse();
+    calculateSmallStraight();
+    calculateLargeStraight();
+    calculateYahtzee();
+    calculateChanceBonus();
 }
 
 
+// Bonus score 
+function calculateBonusScore() {
+    const upperSectionSum = scores.ones + scores.twos + scores.threes + scores.fours + scores.fives + scores.sixes;
+    const bonusThreshold = 63;
 
+    scores.bonus = upperSectionSum >= bonusThreshold ? 35 : 0;
+    document.getElementById('score-bonus').textContent = scores.bonus;
+}
 
+//Three of a kind score
+function calculateThreeOfAKind() {
+    const sortedValues = diceValues.slice().sort();
+    
+    for (let i = 0; i <= sortedValues.length - 3; i++) {
+        if (sortedValues[i] === sortedValues[i + 1] && sortedValues[i + 1] === sortedValues[i + 2]) {
+            scores.threeOfaKind = sortedValues.reduce((total, value) => total + value, 0);
+            break;
+        }
+    }
+
+    document.getElementById('score-threeOfaKind').textContent = scores.threeOfaKind;
+}
+
+    // Full house
+function calculateFullHouse() {
+    const sortedValues = diceValues.slice().sort();
+    
+    if ((sortedValues[0] === sortedValues[1] && sortedValues[1] === sortedValues[2] && sortedValues[3] === sortedValues[4]) ||
+        (sortedValues[0] === sortedValues[1] && sortedValues[2] === sortedValues[3] && sortedValues[3] === sortedValues[4])) {
+        scores.fullHouse = 25;
+    }
+
+    document.getElementById('score-fullHouse').textContent = scores.fullHouse;
+}
+
+    // Small straight 
+function calculateSmallStraight() {
+    const uniqueValues = Array.from(new Set(diceValues)).sort();
+
+    // Check for a small straight (four consecutive values)
+    if (
+        (uniqueValues[0] === 1 && uniqueValues[1] === 2 && uniqueValues[2] === 3 && uniqueValues[3] === 4) ||
+        (uniqueValues[1] === 2 && uniqueValues[2] === 3 && uniqueValues[3] === 4 && uniqueValues[4] === 5) ||
+        (uniqueValues[2] === 3 && uniqueValues[3] === 4 && uniqueValues[4] === 5 && uniqueValues[5] === 6)
+    ) {
+        scores.smallStraight = 30;
+    }
+
+    document.getElementById('score-smallStraight').textContent = scores.smallStraight;
+}
+
+function calculateLargeStraight() {
+    const uniqueValues = Array.from(new Set(diceValues)).sort();
+
+    //Large straight score
+    if (
+        (uniqueValues[0] === 1 && uniqueValues[1] === 2 && uniqueValues[2] === 3 && uniqueValues[3] === 4 && uniqueValues[4] === 5) ||
+        (uniqueValues[1] === 2 && uniqueValues[2] === 3 && uniqueValues[3] === 4 && uniqueValues[4] === 5 && uniqueValues[5] === 6)
+    ) {
+        scores.largeStraight = 40;
+    }
+
+    document.getElementById('score-largeStraight').textContent = scores.largeStraight;
+}
+
+    // Yhatzee score
+function calculateYahtzee() {
+    // Check if all dice values are the same
+    if (diceValues.every(value => value === diceValues[0])) {
+        scores.yahtzee = 50;
+    }
+
+    document.getElementById('score-yahtzee').textContent = scores.yahtzee;
+}
+
+    // Chance bonus score
+function calculateChanceBonus() {
+    scores.chanceBonus = diceValues.reduce((total, value) => total + value, 0);
+    document.getElementById('score-chanceBonus').textContent = scores.chanceBonus;
+}
