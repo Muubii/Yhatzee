@@ -7,9 +7,16 @@
     font-family: 'Roboto', sans-serif;
     font-size: 40px;
 }
+#howManyLeft{
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+}
+
+.button-container{
+text-align: center;
+}
 
 #button{
-    align-items: center;
     font-family: 'Roboto', sans-serif;
     border-radius: 4px;
     font-size: 30px;
@@ -47,20 +54,28 @@ font-family: 'Roboto', sans-serif;
 #scoreboard {
     margin-top: 20px;
     text-align: center;
-    text-align: center;
     font-family: 'Roboto', sans-serif;
 }
 
-#board{
-    align-items: center;
+.bord{
+
 }
 
 #scoreboard th, #scoreboard td {
     border: 1px solid #ddd;
     padding: 8px;
-    text-align: center;
 }
 
 .selected {
     background-color:paleturquoise;
   }
+
+#playPauseBTN {
+    font-family: 'Roboto', sans-serif;
+    border-radius: 4px;
+    font-size: 15px;
+}
+
+.audio-container {
+    padding: 5px;
+}

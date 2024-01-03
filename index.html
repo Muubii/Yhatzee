@@ -5,17 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="index.css">
     <title>Yahtzee</title>
+    <link rel="icon" href="img/favicon.ico">
     <body>
 
         <h1 id="head">Yahtzee Game</h1>
         <div id="dice-container"></div>
-        <p>Restende worpen: <span id="rolls-left">3</span></p>
+        <p id = "howManyLeft">Restende worpen: <span id="rolls-left">3</span></p>
+        <div class="button-container">
         <button id="button" onclick="rollDice()">Roll Dice</button>
+        </div>
         </div>
     
         <div id="scoreboard">
             <h2>Score Board</h2>
-            <table id="Board">
+            <div class="Bord">
+            <table>
                 <thead>
                     <tr>
                         <th>Categorie</th>
@@ -56,6 +60,10 @@
                         <td id="score-threeOfaKind">0</td>
                     </tr>
                     <tr>
+                        <td>Four of a kind</td>
+                        <td id="score-fourOfaKind">0</td>
+                    </tr>
+                    <tr>
                         <td>Full house</td>
                         <td id="score-fullHouse">0</td>
                     </tr>
@@ -79,9 +87,31 @@
                         <td>Total Score</td>
                         <td id="total-score">0</td>
                     </tr>
+
+                    <tr>
+                        <td>Score 1</td>
+                        <td id="score-1">0</td>
+                    </tr>
+
+                    <tr>
+                        <td>Score 2</td>
+                        <td id="score-2">0</td>
+                    </tr>
+
+                    <tr>
+                        <td>Score 3</td>
+                        <td id="score-3">0</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
+    </div>
+
+    <div class="audio-container">
+    <audio id="audio" src="music/mixSongBySam.mp3"></audio>
+    <button id="playPauseBTN" onclick="playPause">stop</button>
+    </div>
+
 
     <script src="Index.js"></script>
 </body>

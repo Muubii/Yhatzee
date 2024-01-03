@@ -9,7 +9,7 @@ let scores = {
     sixes: 0
 };
 let selectedDice = [];
-
+let scoreHistory = [0, 0, 0];
 
 //hoeveel rollen je krijgt
 function rollDice() {
@@ -19,7 +19,7 @@ function rollDice() {
 
         for (let i = 0; i < 5; i++) {
             let diceValue;
-            
+
             // Controleer of de dobbelsteen geselecteerd is
             if (selectedDice.includes(i)) {
                 diceValue = diceValues[i];
@@ -34,7 +34,7 @@ function rollDice() {
             diceElement.textContent = diceValue;
             diceElement.setAttribute('data-index', i);
             diceElement.onclick = toggleHold;
-            
+
             // Voeg de 'selected'-klasse toe als de dobbelsteen geselecteerd is
             if (selectedDice.includes(i)) {
                 diceElement.classList.add('selected');
@@ -42,9 +42,6 @@ function rollDice() {
 
             diceContainer.appendChild(diceElement);
         }
-
-        // Reset de geselecteerde dobbelstenen
-        selectedDice = [];
 
         rollsLeft--;
         updateRollsLeft();
@@ -112,6 +109,17 @@ function calculateScore() {
     }
     document.getElementById('total-score').textContent = totalScore;
 
+    //Update de scoreboard totaal
+    scoreHistory.push(totalScore);
+    if (scoreHistory.length > 3) {
+    scoreHistory.shift();
+    }
+        
+    // Update de scoregeschiedenis in de HTML
+    document.getElementById('score-1').textContent = scoreHistory[0] || 0;
+    document.getElementById('score-2').textContent = scoreHistory[1] || 0;
+    document.getElementById('score-3').textContent = scoreHistory[2] || 0;
+    
     calculateBonusScore();
     calculateThreeOfAKind();
     calculateFullHouse();
@@ -119,8 +127,8 @@ function calculateScore() {
     calculateLargeStraight();
     calculateYahtzee();
     calculateChanceBonus();
+    calculateFourOfAKind();
 }
-
 
 // Bonus score 
 function calculateBonusScore() {
@@ -143,6 +151,21 @@ function calculateThreeOfAKind() {
     }
 
     document.getElementById('score-threeOfaKind').textContent = scores.threeOfaKind;
+}
+
+
+// Four of a kind score
+function calculateFourOfAKind() {
+    const sortedValues = diceValues.slice().sort();
+    
+    for (let i = 0; i <= sortedValues.length - 4; i++) {
+        if (sortedValues[i] === sortedValues[i + 1] && sortedValues[i + 1] === sortedValues[i + 2] && sortedValues[i + 2] === sortedValues[i + 3]) {
+            scores.fourOfaKind = sortedValues.reduce((total, value) => total + value, 0);
+            break;
+        }
+    }
+
+    document.getElementById('score-fourOfaKind').textContent = scores.fourOfaKind;
 }
 
     // Full house
