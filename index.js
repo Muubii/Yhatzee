@@ -225,3 +225,22 @@ function calculateChanceBonus() {
     scores.chanceBonus = diceValues.reduce((total, value) => total + value, 0);
     document.getElementById('score-chanceBonus').textContent = scores.chanceBonus;
 }
+
+// toggle aidio play/pauze
+let playPause = document.getElementById("playPause");
+let audio;
+
+function togglePlayPause() {
+  if (!audio || audio.paused) {
+    if (!audio) {
+      audio = new Audio("music/mixSongBySam.mp3");
+    }
+    audio.play();
+    playPause.innerText = "Pause";
+  } else {
+    audio.pause();
+    playPause.innerText = "Play";
+  }
+}
+
+playPause.addEventListener("click", togglePlayPause);

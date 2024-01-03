@@ -8,7 +8,10 @@
     <link rel="icon" href="img/favicon.ico">
     <body>
 
-        <h1 id="head">Yahtzee Game</h1>
+        <div class="audio-container">
+            <button id="playPause">Play</button>
+            <h1 id="head">Yahtzee Game</h1>
+            </div>
         <div id="dice-container"></div>
         <p id = "howManyLeft">Restende worpen: <span id="rolls-left">3</span></p>
         <div class="button-container">
@@ -107,10 +110,6 @@
         </div>
     </div>
 
-    <div class="audio-container">
-    <audio id="audio" src="music/mixSongBySam.mp3"></audio>
-    <button id="playPauseBTN" onclick="playPause">stop</button>
-    </div>
 
 
     <script src="Index.js"></script>
