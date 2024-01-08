@@ -6,10 +6,18 @@ let scores = {
     threes: 0,
     fours: 0,
     fives: 0,
-    sixes: 0
+    sixes: 0,
+    threeOfaKind: 0,
+    fourOfaKind: 0,
+    fullHouse: 0,
+    smallStraight: 0,
+    largeStraight: 0,
+    yahtzee: 0,
+    chanceBonus: 0
 };
 let selectedDice = [];
 let scoreHistory = [0, 0, 0];
+let selectedScoreCategories = []; 
 
 //hoeveel rollen je krijgt
 function rollDice() {
@@ -116,9 +124,7 @@ function calculateScore() {
     }
         
     // Update de scoregeschiedenis in de HTML
-    document.getElementById('score-1').textContent = scoreHistory[0] || 0;
-    document.getElementById('score-2').textContent = scoreHistory[1] || 0;
-    document.getElementById('score-3').textContent = scoreHistory[2] || 0;
+
     
     calculateBonusScore();
     calculateThreeOfAKind();
@@ -225,6 +231,39 @@ function calculateChanceBonus() {
     scores.chanceBonus = diceValues.reduce((total, value) => total + value, 0);
     document.getElementById('score-chanceBonus').textContent = scores.chanceBonus;
 }
+
+
+function selectScore(category) {
+
+    switch (category){
+
+        case 'threeOfaKind':
+            score = calculateThreeOfAKind();
+            break;
+        case 'fourOfaKind':
+            score = calculateFourOfAKind();
+            break;
+        case 'fullHouse':
+            score = calculateFullHouse();
+            break;
+        case 'smallStraight':
+            score = calculateSmallStraight();
+            break;
+        case 'largeStraight':
+            score = calculateLargeStraight();
+            break;
+        case 'yahtzee':
+            score = calculateYahtzee();
+            break;
+        case 'chanceBonus':
+            score = calculateChanceBonus();
+            break;
+    }
+        selectedScoreCategories.push(category);
+    
+}
+
+
 
 // toggle aidio play/pauze
 let playPause = document.getElementById("playPause");

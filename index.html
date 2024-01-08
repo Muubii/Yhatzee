@@ -19,10 +19,11 @@
         </div>
         </div>
     
-        <div id="scoreboard">
+        <div id="naam-Scoreboard">
             <h2>Score Board</h2>
-            <div class="Bord">
-            <table>
+            <div>
+                <div class="Scoreboard.container">
+            <table id="ScoreBoard">
                 <thead>
                     <tr>
                         <th>Categorie</th>
@@ -32,27 +33,27 @@
                 <tbody>
                     <tr>
                         <td>Ones</td>
-                        <td id="score-ones">0</td>
+                        <td id="score-ones" onclick="selectScore('ones')">0</td>
                     </tr>
                     <tr>
                         <td>Twos</td>
-                        <td id="score-twos">0</td>
+                        <td id="score-twos" onclick="selectScore('twos')">0</td>
                     </tr>
                     <tr>
                         <td>Threes</td>
-                        <td id="score-threes">0</td>
+                        <td id="score-threes" onclick="selectScore('threes')">0</td>
                     </tr>
                     <tr>
                         <td>Fours</td>
-                        <td id="score-fours">0</td>
+                        <td id="score-fours" onclick="selectScore('fours')">0</td>
                     </tr>
                     <tr>
                         <td>Fives</td>
-                        <td id="score-fives">0</td>
+                        <td id="score-fives" onclick="selectScore('fives')">0</td>
                     </tr>
                     <tr>
                         <td>Sixes</td>
-                        <td id="score-sixes">0</td>
+                        <td id="score-sixes" onclick="selectScore('sixes')">0</td>
                     </tr>
                     <tr>
                         <td>Bonus</td>
@@ -60,53 +61,39 @@
                     </tr>
                     <tr>
                         <td>Three of a kind</td>
-                        <td id="score-threeOfaKind">0</td>
+                        <td id="score-threeOfaKind" onclick="selectScore('threeOfaKind')">0</td>
                     </tr>
                     <tr>
                         <td>Four of a kind</td>
-                        <td id="score-fourOfaKind">0</td>
+                        <td id="score-fourOfaKind" onclick="selectScore('fourOfaKind')">0</td>
                     </tr>
                     <tr>
                         <td>Full house</td>
-                        <td id="score-fullHouse">0</td>
+                        <td id="score-fullHouse" onclick="selectScore('fullHouse')">0</td>
                     </tr>
                     <tr>
                         <td>Small straight</td>
-                        <td id="score-smallStraight">0</td>
+                        <td id="score-smallStraight" onclick="selectScore('smallStraight')">0</td>
                     </tr>
                     <tr>
                         <td>Large straight</td>
-                        <td id="score-largeStraight">0</td>
+                        <td id="score-largeStraight" onclick="selectScore('largeStraight')">0</td>
                     </tr>
                     <tr>
                         <td>Yahtzee</td>
-                        <td id="score-yahtzee">0</td>
+                        <td id="score-yahtzee" onclick="selectScore('yahtzee')">0</td>
                     </tr>
                     <tr>
                         <td>Chance bonus</td>
-                        <td id="score-chanceBonus">0</td>
+                        <td id="score-chanceBonus" onclick="selectScore('chanceBonus')">0</td>
                     </tr>
                     <tr>
                         <td>Total Score</td>
                         <td id="total-score">0</td>
                     </tr>
-
-                    <tr>
-                        <td>Score 1</td>
-                        <td id="score-1">0</td>
-                    </tr>
-
-                    <tr>
-                        <td>Score 2</td>
-                        <td id="score-2">0</td>
-                    </tr>
-
-                    <tr>
-                        <td>Score 3</td>
-                        <td id="score-3">0</td>
-                    </tr>
                 </tbody>
             </table>
+            </div>
         </div>
     </div>
 

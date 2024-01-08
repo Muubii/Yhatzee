@@ -6,6 +6,7 @@
     text-align: center;
     font-family: 'Roboto', sans-serif;
     font-size: 40px;
+    height: 5vh;
 }
 #howManyLeft{
     text-align: center;
@@ -51,14 +52,33 @@ font-family: 'Roboto', sans-serif;
 }
 
 
-#scoreboard {
-    margin-top: 20px;
-    text-align: center;
-    font-family: 'Roboto', sans-serif;
+#naam-Scoreboard {
+    font-family: 'Roboto', sans-serif;  
 }
 
-.bord{
+h2{
+    margin-left: 40vh;  
+}
 
+.Scoreboard.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; 
+}
+
+#ScoreBoard{
+    width: 300px; 
+    margin-left: 30vh; 
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    background-color: #ededed;
+}
+
+@media (max-width: 100vh) {
+    #ScoreBoard {
+        margin-left: 10vh; 
+        width: 75%; 
+    }
 }
 
 #scoreboard th, #scoreboard td {
