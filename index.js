@@ -88,7 +88,7 @@ function toggleSelect(diceElement) {
 }
 
 function calculateScore() {
-    // Reset score
+    // Reset score de code moet nog maken dat na 3 rolls reset komt
     for (let category in scores) {
         scores[category] = 0;
     }
@@ -104,16 +104,27 @@ function calculateScore() {
         scores['sixes'] += (diceValue === 6) ? 6 : 0;
     }
 
+    // Update de scoregeschiedenis in de HTML
+    calculateThreeOfAKind();
+    calculateFullHouse();
+    calculateSmallStraight();
+    calculateLargeStraight();
+    calculateYahtzee();
+    calculateChanceBonus();
+    calculateFourOfAKind();
+    calculateBonusScore();
+    
     // Update individueel scores
     for (let category in scores) {
         let scoreElement = document.getElementById('score-' + category);
-        scoreElement.textContent = scores[category];
+        if(scoreElement.onclick != null){
+            scoreElement.textContent = scores[category];
+        }
     }
 
-    // Rekenen en update totaale score
     let totalScore = 0;
-    for (let category in scores) {
-        totalScore += scores[category];
+    for (let scoreType in scores) {
+        totalScore += score[scoreType];
     }
     document.getElementById('total-score').textContent = totalScore;
 
@@ -122,27 +133,38 @@ function calculateScore() {
     if (scoreHistory.length > 3) {
     scoreHistory.shift();
     }
-        
-    // Update de scoregeschiedenis in de HTML
+}
 
-    
-    calculateBonusScore();
-    calculateThreeOfAKind();
-    calculateFullHouse();
-    calculateSmallStraight();
-    calculateLargeStraight();
-    calculateYahtzee();
-    calculateChanceBonus();
-    calculateFourOfAKind();
+// een select score die wel iets kan selecteren maar niks in kan doen
+function selectScore(scoreType) {
+    let scoreElement = document.getElementById('score-' + scoreType);
+    scoreElement.style.cursor = 'default';
+    scoreElement.style.backgroundColor = 'red';
+    scoreElement.onclick = null; // Remove the click event listener
+        // You can add more logic here to validate the entered score
+
+        /*
+    let scoreboardTable = document.getElementById("ScoreBoard");
+    if (scoreboardTable) {
+        scoreboardTable.querySelectorAll("td").forEach(cell => {
+            if (cell.textContent === "Klik hier" && cell.previousElementSibling.textContent.toLowerCase() === scoreType) {
+                //cell.textContent = score;
+                cell.style.cursor = 'default';
+                cell.style.backgroundColor = 'red';
+                cell.onclick = null; // Remove the click event listener
+                console.log('p');
+            }
+        });
+    }*/
 }
 
 // Bonus score 
 function calculateBonusScore() {
     const upperSectionSum = scores.ones + scores.twos + scores.threes + scores.fours + scores.fives + scores.sixes;
-    const bonusThreshold = 63;
+    const bonusThreshold = 64;
 
     scores.bonus = upperSectionSum >= bonusThreshold ? 35 : 0;
-    document.getElementById('score-bonus').textContent = scores.bonus;
+    // document.getElementById('score-bonus').textContent = scores.bonus;
 }
 
 //Three of a kind score
@@ -156,7 +178,7 @@ function calculateThreeOfAKind() {
         }
     }
 
-    document.getElementById('score-threeOfaKind').textContent = scores.threeOfaKind;
+    //document.getElementById('score-threeOfaKind').textContent = scores.threeOfaKind;
 }
 
 
@@ -171,7 +193,7 @@ function calculateFourOfAKind() {
         }
     }
 
-    document.getElementById('score-fourOfaKind').textContent = scores.fourOfaKind;
+    // document.getElementById('score-fourOfaKind').textContent = scores.fourOfaKind;
 }
 
     // Full house
@@ -183,7 +205,7 @@ function calculateFullHouse() {
         scores.fullHouse = 25;
     }
 
-    document.getElementById('score-fullHouse').textContent = scores.fullHouse;
+    // document.getElementById('score-fullHouse').textContent = scores.fullHouse;
 }
 
     // Small straight 
@@ -199,7 +221,7 @@ function calculateSmallStraight() {
         scores.smallStraight = 30;
     }
 
-    document.getElementById('score-smallStraight').textContent = scores.smallStraight;
+    // document.getElementById('score-smallStraight').textContent = scores.smallStraight;
 }
 
 function calculateLargeStraight() {
@@ -213,7 +235,7 @@ function calculateLargeStraight() {
         scores.largeStraight = 40;
     }
 
-    document.getElementById('score-largeStraight').textContent = scores.largeStraight;
+    // document.getElementById('score-largeStraight').textContent = scores.largeStraight;
 }
 
     // Yhatzee score
@@ -223,45 +245,15 @@ function calculateYahtzee() {
         scores.yahtzee = 50;
     }
 
-    document.getElementById('score-yahtzee').textContent = scores.yahtzee;
+    // document.getElementById('score-yahtzee').textContent = scores.yahtzee;
 }
 
     // Chance bonus score
 function calculateChanceBonus() {
     scores.chanceBonus = diceValues.reduce((total, value) => total + value, 0);
-    document.getElementById('score-chanceBonus').textContent = scores.chanceBonus;
+    // document.getElementById('score-chanceBonus').textContent = scores.chanceBonus;
 }
-
-
-function selectScore(category) {
-
-    switch (category){
-
-        case 'threeOfaKind':
-            score = calculateThreeOfAKind();
-            break;
-        case 'fourOfaKind':
-            score = calculateFourOfAKind();
-            break;
-        case 'fullHouse':
-            score = calculateFullHouse();
-            break;
-        case 'smallStraight':
-            score = calculateSmallStraight();
-            break;
-        case 'largeStraight':
-            score = calculateLargeStraight();
-            break;
-        case 'yahtzee':
-            score = calculateYahtzee();
-            break;
-        case 'chanceBonus':
-            score = calculateChanceBonus();
-            break;
-    }
-        selectedScoreCategories.push(category);
-    
-}
+   
 
 
 
