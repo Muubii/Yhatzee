@@ -21,21 +21,21 @@ let selectedScoreCategories = [];
 
 //hoeveel rollen je krijgt
 function rollDice() {
-    if (rollsLeft > 0) {
-        let diceContainer = document.getElementById('dice-container');
-        diceContainer.innerHTML = '';
+    let diceContainer = document.getElementById('dice-container');
 
+    if (rollsLeft > 0) {
+        diceContainer.innerHTML = '';
+        
         for (let i = 0; i < 5; i++) {
             let diceValue;
 
-            // Controleer of de dobbelsteen geselecteerd is
+            // Check if the dice is selected
             if (selectedDice.includes(i)) {
                 diceValue = diceValues[i];
             } else {
                 diceValue = Math.floor(Math.random() * 6) + 1;
+                diceValues[i] = diceValue;
             }
-
-            diceValues[i] = diceValue;
 
             let diceElement = document.createElement('div');
             diceElement.className = 'dice';
@@ -43,7 +43,7 @@ function rollDice() {
             diceElement.setAttribute('data-index', i);
             diceElement.onclick = toggleHold;
 
-            // Voeg de 'selected'-klasse toe als de dobbelsteen geselecteerd is
+            // Add 'selected' class if the dice is selected
             if (selectedDice.includes(i)) {
                 diceElement.classList.add('selected');
             }
@@ -54,11 +54,19 @@ function rollDice() {
         rollsLeft--;
         updateRollsLeft();
         calculateScore();
-
-        if (rollsLeft === 0) {
-            rollsLeft = 3;
-        }
     }
+
+    if (rollsLeft === -1) {
+        rollsLeft = ''; // Reset rollsLeft for next turn
+    }
+}
+
+//reset na 3 rolls
+function resetGameState() {
+    rollsLeft = 3;
+    diceValues = [];
+    selectedDice = [];
+    updateRollsLeft();
 }
 
 
@@ -88,7 +96,7 @@ function toggleSelect(diceElement) {
 }
 
 function calculateScore() {
-    // Reset score de code moet nog maken dat na 3 rolls reset komt
+      // Reset score de code moet nog maken dat na 3 rolls reset komt
     for (let category in scores) {
         scores[category] = 0;
     }
@@ -113,49 +121,42 @@ function calculateScore() {
     calculateChanceBonus();
     calculateFourOfAKind();
     calculateBonusScore();
-    
-    // Update individueel scores
+
+    // Update individual scores in de HTML
     for (let category in scores) {
         let scoreElement = document.getElementById('score-' + category);
-        if(scoreElement.onclick != null){
+        if(scoreElement && scoreElement.onclick != null) {
             scoreElement.textContent = scores[category];
         }
     }
 
+    // Calculate and display total score based on selected categories
     let totalScore = 0;
-    for (let scoreType in scores) {
-        totalScore += score[scoreType];
+    for (let category in scores) {
+        let scoreElement = document.getElementById('score-' + category);
+        if (scoreElement && scoreElement.style.backgroundColor === 'red') {
+            totalScore += scores[category];
+        }
     }
     document.getElementById('total-score').textContent = totalScore;
 
-    //Update de scoreboard totaal
+    // Update de score history
     scoreHistory.push(totalScore);
     if (scoreHistory.length > 3) {
-    scoreHistory.shift();
+        scoreHistory.shift();
     }
 }
+
 
 // een select score die wel iets kan selecteren maar niks in kan doen
 function selectScore(scoreType) {
     let scoreElement = document.getElementById('score-' + scoreType);
-    scoreElement.style.cursor = 'default';
     scoreElement.style.backgroundColor = 'red';
+    scoreElement.style.cursor = 'default';
     scoreElement.onclick = null; // Remove the click event listener
-        // You can add more logic here to validate the entered score
 
-        /*
-    let scoreboardTable = document.getElementById("ScoreBoard");
-    if (scoreboardTable) {
-        scoreboardTable.querySelectorAll("td").forEach(cell => {
-            if (cell.textContent === "Klik hier" && cell.previousElementSibling.textContent.toLowerCase() === scoreType) {
-                //cell.textContent = score;
-                cell.style.cursor = 'default';
-                cell.style.backgroundColor = 'red';
-                cell.onclick = null; // Remove the click event listener
-                console.log('p');
-            }
-        });
-    }*/
+    resetGameState(); // reset score 
+    calculateScore(); // Recalculate the total score when a category is selected
 }
 
 // Bonus score 
@@ -164,7 +165,7 @@ function calculateBonusScore() {
     const bonusThreshold = 64;
 
     scores.bonus = upperSectionSum >= bonusThreshold ? 35 : 0;
-    // document.getElementById('score-bonus').textContent = scores.bonus;
+
 }
 
 //Three of a kind score
@@ -178,7 +179,6 @@ function calculateThreeOfAKind() {
         }
     }
 
-    //document.getElementById('score-threeOfaKind').textContent = scores.threeOfaKind;
 }
 
 
@@ -193,7 +193,6 @@ function calculateFourOfAKind() {
         }
     }
 
-    // document.getElementById('score-fourOfaKind').textContent = scores.fourOfaKind;
 }
 
     // Full house
@@ -205,7 +204,6 @@ function calculateFullHouse() {
         scores.fullHouse = 25;
     }
 
-    // document.getElementById('score-fullHouse').textContent = scores.fullHouse;
 }
 
     // Small straight 
@@ -221,7 +219,6 @@ function calculateSmallStraight() {
         scores.smallStraight = 30;
     }
 
-    // document.getElementById('score-smallStraight').textContent = scores.smallStraight;
 }
 
 function calculateLargeStraight() {
@@ -235,7 +232,7 @@ function calculateLargeStraight() {
         scores.largeStraight = 40;
     }
 
-    // document.getElementById('score-largeStraight').textContent = scores.largeStraight;
+
 }
 
     // Yhatzee score
@@ -245,13 +242,13 @@ function calculateYahtzee() {
         scores.yahtzee = 50;
     }
 
-    // document.getElementById('score-yahtzee').textContent = scores.yahtzee;
+
 }
 
     // Chance bonus score
 function calculateChanceBonus() {
     scores.chanceBonus = diceValues.reduce((total, value) => total + value, 0);
-    // document.getElementById('score-chanceBonus').textContent = scores.chanceBonus;
+
 }
    
 
