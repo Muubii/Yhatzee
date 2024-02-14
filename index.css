@@ -32,9 +32,6 @@ align-items: center;
 font-family: 'Roboto', sans-serif;
 }
 
-#tr{
-    gap: 5%;
-}
 
 .dice {
     width: 50px;

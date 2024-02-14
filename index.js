@@ -17,48 +17,47 @@ let scores = {
 };
 let selectedDice = [];
 let scoreHistory = [0, 0, 0];
-let selectedScoreCategories = []; 
 
 //hoeveel rollen je krijgt
 function rollDice() {
     let diceContainer = document.getElementById('dice-container');
 
     if (rollsLeft > 0) {
-        diceContainer.innerHTML = '';
-        
+        diceContainer.innerHTML = '';  // Leegmaken van de container
+
         for (let i = 0; i < 5; i++) {
-            let diceValue;
-
-            // Check if the dice is selected
-            if (selectedDice.includes(i)) {
-                diceValue = diceValues[i];
-            } else {
-                diceValue = Math.floor(Math.random() * 6) + 1;
-                diceValues[i] = diceValue;
+            if (!selectedDice.includes(i)) {
+                // Alleen nieuwe waarde genereren voor niet-geselecteerde dobbelstenen
+                diceValues[i] = Math.floor(Math.random() * 6) + 1;
             }
 
-            let diceElement = document.createElement('div');
-            diceElement.className = 'dice';
-            diceElement.textContent = diceValue;
-            diceElement.setAttribute('data-index', i);
-            diceElement.onclick = toggleHold;
-
-            // Add 'selected' class if the dice is selected
-            if (selectedDice.includes(i)) {
-                diceElement.classList.add('selected');
-            }
-
+            // Creëer en voeg dobbelsteen toe aan de container
+            let diceElement = createDiceElement(i, diceValues[i]);
             diceContainer.appendChild(diceElement);
         }
-
+        
         rollsLeft--;
         updateRollsLeft();
         calculateScore();
     }
 
     if (rollsLeft === -1) {
-        rollsLeft = ''; // Reset rollsLeft for next turn
+        rollsLeft = ''; // Reset rollsLeft voor volgende beurt
     }
+}
+
+function createDiceElement(index, value) {
+    let diceElement = document.createElement('div');
+    diceElement.className = 'dice';
+    diceElement.textContent = value;
+    diceElement.setAttribute('data-index', index);
+    diceElement.onclick = toggleHold;
+
+    if (selectedDice.includes(index)) {
+        diceElement.classList.add('selected');
+    }
+
+    return diceElement;
 }
 
 //reset na 3 rolls
@@ -69,7 +68,6 @@ function resetGameState() {
     updateRollsLeft();
 }
 
-
 function updateRollsLeft() {
     // Update de teller 
     document.getElementById('rolls-left').textContent = rollsLeft;
@@ -79,7 +77,6 @@ function toggleHold(event) {
     let index = event.target.getAttribute('data-index');
     let diceElement = document.querySelector('[data-index="' + index + '"]');
     
-
     toggleSelect(diceElement);
 }
 
@@ -96,31 +93,9 @@ function toggleSelect(diceElement) {
 }
 
 function calculateScore() {
-      // Reset score de code moet nog maken dat na 3 rolls reset komt
-    for (let category in scores) {
-        scores[category] = 0;
-    }
 
-    // Rekenen scores
-    for (let i = 0; i < diceValues.length; i++) {
-        let diceValue = diceValues[i];
-        scores['ones'] += (diceValue === 1) ? 1 : 0;
-        scores['twos'] += (diceValue === 2) ? 2 : 0;
-        scores['threes'] += (diceValue === 3) ? 3 : 0;
-        scores['fours'] += (diceValue === 4) ? 4 : 0;
-        scores['fives'] += (diceValue === 5) ? 5 : 0;
-        scores['sixes'] += (diceValue === 6) ? 6 : 0;
-    }
-
-    // Update de scoregeschiedenis in de HTML
-    calculateThreeOfAKind();
-    calculateFullHouse();
-    calculateSmallStraight();
-    calculateLargeStraight();
-    calculateYahtzee();
-    calculateChanceBonus();
-    calculateFourOfAKind();
-    calculateBonusScore();
+    calculateUpperSectionScores();
+    calculateLowerSectionScores();
 
     // Update individual scores in de HTML
     for (let category in scores) {
@@ -128,8 +103,8 @@ function calculateScore() {
         if(scoreElement && scoreElement.onclick != null) {
             scoreElement.textContent = scores[category];
         }
-    }
-
+    }    
+    // maybe bug code idk
     // Calculate and display total score based on selected categories
     let totalScore = 0;
     for (let category in scores) {
@@ -139,14 +114,7 @@ function calculateScore() {
         }
     }
     document.getElementById('total-score').textContent = totalScore;
-
-    // Update de score history
-    scoreHistory.push(totalScore);
-    if (scoreHistory.length > 3) {
-        scoreHistory.shift();
-    }
 }
-
 
 // een select score die wel iets kan selecteren maar niks in kan doen
 function selectScore(scoreType) {
@@ -159,13 +127,84 @@ function selectScore(scoreType) {
     calculateScore(); // Recalculate the total score when a category is selected
 }
 
+function updateTotalScore() {
+    let totalScoreElement = document.getElementById('total-score');
+    totalScoreElement.textContent = selectedScoreType + totalScoreElement;
+}
+
+// function selectScore(scoreType) {
+//     let scoreElement = document.getElementById('score-' + scoreType);
+
+//     // Only update score if it hasn't been selected yet
+//     if (scoreElement.onclick !== null) {
+//         scoreElement.style.backgroundColor = 'red';
+//         scoreElement.style.cursor = 'default';
+//         scoreElement.onclick = null; // Remove the click event listener
+
+//         // Update the total score
+//         updateTotalScore(scoreType);
+//         calculateScore();
+//         resetGameState(); // reset the game state for the next turn
+//     }
+// }
+
+// function updateTotalScore(selectedScoreType) {
+//     let totalScoreElement = document.getElementById('total-score');
+//     let selectedScoreValue = scores[selectedScoreType];
+//     let currentTotalScore = parseInt(totalScoreElement.textContent) || 0;
+//     totalScoreElement.textContent = currentTotalScore + selectedScoreValue;
+// }
+
+function calculateUpperSectionScores(){
+
+    scores['ones'] = 0;
+    scores['twos'] = 0;
+    scores['threes'] = 0;
+    scores['fours'] = 0;
+    scores['fives'] = 0;
+    scores['sixes'] = 0;
+    
+    for (let i = 0; i < diceValues.length; i++) {
+        let diceValue = diceValues[i];
+        scores['ones'] += (diceValue === 1) ? 1 : 0;
+        scores['twos'] += (diceValue === 2) ? 2 : 0;
+        scores['threes'] += (diceValue === 3) ? 3 : 0;
+        scores['fours'] += (diceValue === 4) ? 4 : 0;
+        scores['fives'] += (diceValue === 5) ? 5 : 0;
+        scores['sixes'] += (diceValue === 6) ? 6 : 0;
+    }
+}
+
+function calculateLowerSectionScores(){
+
+    scores['threeOfaKind'] = 0;
+    scores['fourOfaKind'] = 0;
+    scores['fullHouse'] = 0;
+    scores['smallStraight'] = 0;
+    scores['LargeStraight'] = 0;
+    scores['yahtzee'] = 0;
+    scores['chanceBonus'] = 0;
+
+
+    calculateBonusScore();
+    calculateThreeOfAKind();
+    calculateFourOfAKind();
+    calculateFullHouse();
+    calculateSmallStraight();
+    calculateLargeStraight();
+    calculateYahtzee();
+    calculateBonusScore();
+}
+
+//----------------------------Alle scores functions-------------------------------------------------------------------------------------------------
+
+
 // Bonus score 
 function calculateBonusScore() {
     const upperSectionSum = scores.ones + scores.twos + scores.threes + scores.fours + scores.fives + scores.sixes;
-    const bonusThreshold = 64;
+    const bonusThreshold = 63;
 
     scores.bonus = upperSectionSum >= bonusThreshold ? 35 : 0;
-
 }
 
 //Three of a kind score
@@ -178,7 +217,6 @@ function calculateThreeOfAKind() {
             break;
         }
     }
-
 }
 
 
@@ -192,7 +230,6 @@ function calculateFourOfAKind() {
             break;
         }
     }
-
 }
 
     // Full house
@@ -203,7 +240,6 @@ function calculateFullHouse() {
         (sortedValues[0] === sortedValues[1] && sortedValues[2] === sortedValues[3] && sortedValues[3] === sortedValues[4])) {
         scores.fullHouse = 25;
     }
-
 }
 
     // Small straight 
@@ -218,7 +254,6 @@ function calculateSmallStraight() {
     ) {
         scores.smallStraight = 30;
     }
-
 }
 
 function calculateLargeStraight() {
@@ -231,8 +266,6 @@ function calculateLargeStraight() {
     ) {
         scores.largeStraight = 40;
     }
-
-
 }
 
     // Yhatzee score
@@ -241,18 +274,11 @@ function calculateYahtzee() {
     if (diceValues.every(value => value === diceValues[0])) {
         scores.yahtzee = 50;
     }
-
-
 }
-
     // Chance bonus score
 function calculateChanceBonus() {
     scores.chanceBonus = diceValues.reduce((total, value) => total + value, 0);
-
 }
-   
-
-
 
 // toggle aidio play/pauze
 let playPause = document.getElementById("playPause");
@@ -270,5 +296,4 @@ function togglePlayPause() {
     playPause.innerText = "Play";
   }
 }
-
 playPause.addEventListener("click", togglePlayPause);
