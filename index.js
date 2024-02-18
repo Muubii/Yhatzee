@@ -16,7 +16,8 @@ let scores = {
     chanceBonus: 0
 };
 let selectedDice = [];
-let scoreHistory = [0, 0, 0];
+let selectedScores = {};
+let scoreHistory = [0, 0, 0]; // dit inpv cata
 
 //hoeveel rollen je krijgt
 function rollDice() {
@@ -63,7 +64,6 @@ function createDiceElement(index, value) {
 //reset na 3 rolls
 function resetGameState() {
     rollsLeft = 3;
-    diceValues = [];
     selectedDice = [];
     updateRollsLeft();
 }
@@ -93,67 +93,56 @@ function toggleSelect(diceElement) {
 }
 
 function calculateScore() {
-
     calculateUpperSectionScores();
     calculateLowerSectionScores();
 
-    // Update individual scores in de HTML
-    for (let category in scores) {
-        let scoreElement = document.getElementById('score-' + category);
-        if(scoreElement && scoreElement.onclick != null) {
-            scoreElement.textContent = scores[category];
-        }
-    }    
-    // maybe bug code idk
-    // Calculate and display total score based on selected categories
-    let totalScore = 0;
-    for (let category in scores) {
-        let scoreElement = document.getElementById('score-' + category);
-        if (scoreElement && scoreElement.style.backgroundColor === 'red') {
-            totalScore += scores[category];
+    // Update individual scores in the HTML
+    for (let key in scores) {
+        let scoreElement = document.getElementById('score-' + key);
+
+        // Update score only if not selected
+        if (!selectedScores.hasOwnProperty(key)) {
+            if (scoreElement) {
+                scoreElement.textContent = scores[key];
+            }
         }
     }
+
+    // Calculate and display total score
+    let totalScore = Object.values(selectedScores).reduce((sum, value) => sum + value, 0);
     document.getElementById('total-score').textContent = totalScore;
+}
+
+function resetNonSelectedScores() {
+    for (let key in scores) {
+        if (!selectedScores.hasOwnProperty(key)) {
+            scores[key] = 0;
+        }
+    }
 }
 
 // een select score die wel iets kan selecteren maar niks in kan doen
 function selectScore(scoreType) {
     let scoreElement = document.getElementById('score-' + scoreType);
-    scoreElement.style.backgroundColor = 'red';
-    scoreElement.style.cursor = 'default';
-    scoreElement.onclick = null; // Remove the click event listener
+    if (scoreElement && scoreElement.onclick !== null) {
+        scoreElement.style.backgroundColor = 'red';
+        scoreElement.style.cursor = 'default';
+        scoreElement.onclick = null; // Remove the click event listener
 
-    resetGameState(); // reset score 
-    calculateScore(); // Recalculate the total score when a category is selected
+        // Store the selected score and reset others
+        selectedScores[scoreType] = scores[scoreType];
+        resetNonSelectedScores();
+
+        resetGameState();
+        calculateScore();
+    }
 }
 
-function updateTotalScore() {
+
+function addTotalScore(selectScore){
     let totalScoreElement = document.getElementById('total-score');
-    totalScoreElement.textContent = selectedScoreType + totalScoreElement;
+    totalScore.textContent = totalScoreElement + selectScore;
 }
-
-// function selectScore(scoreType) {
-//     let scoreElement = document.getElementById('score-' + scoreType);
-
-//     // Only update score if it hasn't been selected yet
-//     if (scoreElement.onclick !== null) {
-//         scoreElement.style.backgroundColor = 'red';
-//         scoreElement.style.cursor = 'default';
-//         scoreElement.onclick = null; // Remove the click event listener
-
-//         // Update the total score
-//         updateTotalScore(scoreType);
-//         calculateScore();
-//         resetGameState(); // reset the game state for the next turn
-//     }
-// }
-
-// function updateTotalScore(selectedScoreType) {
-//     let totalScoreElement = document.getElementById('total-score');
-//     let selectedScoreValue = scores[selectedScoreType];
-//     let currentTotalScore = parseInt(totalScoreElement.textContent) || 0;
-//     totalScoreElement.textContent = currentTotalScore + selectedScoreValue;
-// }
 
 function calculateUpperSectionScores(){
 
