@@ -175,6 +175,7 @@ function calculateLowerSectionScores(){
     scores['chanceBonus'] = 0;
 
 
+
     calculateBonusScore();
     calculateThreeOfAKind();
     calculateFourOfAKind();
@@ -182,6 +183,7 @@ function calculateLowerSectionScores(){
     calculateSmallStraight();
     calculateLargeStraight();
     calculateYahtzee();
+    calculateChanceBonus();
     calculateBonusScore();
 }
 
