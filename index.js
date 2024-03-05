@@ -17,7 +17,7 @@ let scores = {
 };
 let selectedDice = [];
 let selectedScores = {};
-let scoreHistory = [0, 0, 0]; // dit inpv cata
+let scoreHistory = [0, 0, 0]; // dit inpv catar
 
 //hoeveel rollen je krijgt
 function rollDice() {
@@ -61,11 +61,20 @@ function createDiceElement(index, value) {
     return diceElement;
 }
 
+function clearDiceSelection() {
+    const diceElements = document.querySelectorAll('.dice');
+    diceElements.forEach(dice => {
+        dice.classList.remove('selected'); // Remove the 'selected' class to reset background
+    });
+    selectedDice = []; // Reset the selectedDice array
+}
+
 //reset na 3 rolls
 function resetGameState() {
     rollsLeft = 3;
     selectedDice = [];
     updateRollsLeft();
+
 }
 
 function updateRollsLeft() {
@@ -133,6 +142,7 @@ function selectScore(scoreType) {
         selectedScores[scoreType] = scores[scoreType];
         resetNonSelectedScores();
 
+        clearDiceSelection();
         resetGameState();
         calculateScore();
     }
